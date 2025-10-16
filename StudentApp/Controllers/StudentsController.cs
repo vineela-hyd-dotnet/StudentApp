@@ -20,8 +20,13 @@ namespace StudentApp.Controllers
             try
             {
                 var students = _studentService.GetAllStudents();
+                if (students == null)
+                {
+                    return NotFound();
+                }
                 return View(students);
             }
+           
             catch (Exception ex)
             {
                 throw new Exception("Error fetching student list: " + ex.Message);
@@ -33,12 +38,13 @@ namespace StudentApp.Controllers
         {
             try
             {
-                var student = _studentService.GetStudentById(id);
-                if (student == null)
-                    throw new Exception($"Student with ID {id} not found.");
-
-                return View(student);
+                var stud = _studentService.GetStudentById(id);
+                if (stud == null) {
+                    throw new Exception("Id not found");
+                }
+                return View(stud);
             }
+           
             catch (Exception ex)
             {
                 throw new Exception("Error fetching student details: " + ex.Message);
@@ -58,13 +64,17 @@ namespace StudentApp.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    _studentService.AddStudent(student);
-                    return RedirectToAction(nameof(Index));
+                    return BadRequest(ModelState);
+
+
                 }
-                return View(student);
+               var stud= _studentService.AddStudent(student);
+                return RedirectToAction("Index");
+                
             }
+           
             catch (Exception ex)
             {
                 throw new Exception("Error creating student: " + ex.Message);
@@ -95,16 +105,15 @@ namespace StudentApp.Controllers
         {
             try
             {
-                if (id != student.StudentId)
-                    throw new Exception("ID mismatch between route and student data.");
-
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
                 {
-                    _studentService.UpdateStudent(student);
-                    return RedirectToAction(nameof(Index));
+                    return BadRequest(ModelState);
                 }
+                _studentService.UpdateStudent(student);
+                return RedirectToAction("Index");
 
-                return View(student);
+            
+            
             }
             catch (Exception ex)
             {
@@ -136,12 +145,12 @@ namespace StudentApp.Controllers
         {
             try
             {
-                var deletedStudent = _studentService.DeleteStudent(id);
-                if (deletedStudent == null)
-                    throw new Exception($"Student with ID {id} not found for deletion.");
+                var stud = _studentService.DeleteStudent(id);
+               
+                return RedirectToAction("Index");
 
-                return RedirectToAction(nameof(Index));
             }
+          
             catch (Exception ex)
             {
                 throw new Exception("Error deleting student: " + ex.Message);

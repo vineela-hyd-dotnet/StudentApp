@@ -14,62 +14,27 @@ namespace StudentApp.Services
 
         public IEnumerable<Student> GetAllStudents()
         {
-            try
-            {
-                return _repo.GetAllStudents();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error fetching students list", ex);
-            }
+           return _repo.GetAllStudents();
         }
 
         public Student GetStudentById(int studentId)
         {
-            try
-            {
-                return _repo.GetStudentById(studentId);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error fetching student by ID", ex);
-            }
+            return _repo.GetStudentById(studentId);
         }
 
         public Student AddStudent(Student student)
         {
-            try
-            {
-                return _repo.AddStudent(student);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error adding new student", ex);
-            }
+           return _repo.AddStudent(student);
         }
 
         public Student UpdateStudent(Student student)
         {
-            try
-            {
-                return _repo.UpdateStudent(student);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error updating student details", ex);
-            }
+           return _repo.UpdateStudent(student);
         }
 
         public Student DeleteStudent(int studentId)
         {
-            try
-            {
-                return _repo.DeleteStudent(studentId);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error deleting student", ex);
-            }
+            return _repo.DeleteStudent(studentId);
         }
     }
 }
