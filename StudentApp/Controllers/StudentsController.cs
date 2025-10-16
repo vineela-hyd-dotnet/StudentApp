@@ -24,8 +24,7 @@ namespace StudentApp.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error fetching students: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error fetching student list: " + ex.Message);
             }
         }
 
@@ -36,14 +35,13 @@ namespace StudentApp.Controllers
             {
                 var student = _studentService.GetStudentById(id);
                 if (student == null)
-                    return NotFound();
+                    throw new Exception($"Student with ID {id} not found.");
 
                 return View(student);
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error fetching student details: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error fetching student details: " + ex.Message);
             }
         }
 
@@ -63,15 +61,13 @@ namespace StudentApp.Controllers
                 if (ModelState.IsValid)
                 {
                     _studentService.AddStudent(student);
-                    TempData["SuccessMessage"] = "Student added successfully!";
                     return RedirectToAction(nameof(Index));
                 }
                 return View(student);
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error creating student: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error creating student: " + ex.Message);
             }
         }
 
@@ -82,14 +78,13 @@ namespace StudentApp.Controllers
             {
                 var student = _studentService.GetStudentById(id);
                 if (student == null)
-                    return NotFound();
+                    throw new Exception($"Student with ID {id} not found.");
 
                 return View(student);
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error loading edit form: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error loading edit form: " + ex.Message);
             }
         }
 
@@ -101,12 +96,11 @@ namespace StudentApp.Controllers
             try
             {
                 if (id != student.StudentId)
-                    return BadRequest();
+                    throw new Exception("ID mismatch between route and student data.");
 
                 if (ModelState.IsValid)
                 {
                     _studentService.UpdateStudent(student);
-                    TempData["SuccessMessage"] = "Student updated successfully!";
                     return RedirectToAction(nameof(Index));
                 }
 
@@ -114,8 +108,7 @@ namespace StudentApp.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error updating student: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error updating student: " + ex.Message);
             }
         }
 
@@ -126,14 +119,13 @@ namespace StudentApp.Controllers
             {
                 var student = _studentService.GetStudentById(id);
                 if (student == null)
-                    return NotFound();
+                    throw new Exception($"Student with ID {id} not found.");
 
                 return View(student);
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error loading delete confirmation: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error loading delete confirmation: " + ex.Message);
             }
         }
 
@@ -146,15 +138,13 @@ namespace StudentApp.Controllers
             {
                 var deletedStudent = _studentService.DeleteStudent(id);
                 if (deletedStudent == null)
-                    return NotFound();
+                    throw new Exception($"Student with ID {id} not found for deletion.");
 
-                TempData["SuccessMessage"] = "Student deleted successfully!";
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = "Error deleting student: " + ex.Message;
-                return View("Error");
+                throw new Exception("Error deleting student: " + ex.Message);
             }
         }
     }
